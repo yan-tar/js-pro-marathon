@@ -1,1 +1,1 @@
-console.log(`###### FIRST MESSAGE ######`);
+console.log('###### FIRST MESSAGE ######');
