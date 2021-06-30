@@ -1,0 +1,19 @@
+{
+  "name": "js-pro",
+  "version": "1.0.0",
+  "description": "RPG JS Game",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yan-tar/js-pro-marathon.git"
+  },
+  "keywords": [],
+  "author": "Yana Taran",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yan-tar/js-pro-marathon/issues"
+  },
+  "homepage": "https://github.com/yan-tar/js-pro-marathon#readme"
+}
