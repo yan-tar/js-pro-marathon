@@ -20,6 +20,27 @@ module.exports = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
       },
+      {
+          test: /\.scss$/,
+          // use ожидает увидеть перечесление лоадеров (вебпак выполняет лоадеры от последнего к первому)
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader'
+          ]
+      },
+      {
+          test: [/\.svg$/,/\.bmp$/,/\.gif$/,/\.jpe?g$/,/\.png$/,/\.webp$/,/\.avif$/],
+          use: [
+              {
+                  loader: 'file-loader',
+                  options: {
+                      name: '[name].[ext]',
+                      outputPath: 'assets/',
+                  }
+              }
+          ]
+      }
     ],
   },
   plugins: [
