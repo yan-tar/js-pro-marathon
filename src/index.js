@@ -12,7 +12,7 @@ let cycle = 0;
 let sprPos = 0; // spr row
 let posX = 0;
 let posY = 0;
-const canvasEnd = 510;
+const canvasEnd = 550;
 const step = 10;
 let keyPressed = false;
 let keyDown = false;
@@ -112,6 +112,6 @@ girlImg.addEventListener('load', () => {
 
     // все чистим и показываем новую картинку
     ctx.clearRect(0, 0, 600, 600);
-    ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, 100, 100);
+    ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, sprW, sprH);
   }, animSpeed);
 });
