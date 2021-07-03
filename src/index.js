@@ -1,7 +1,6 @@
 import './index.scss';
 import GirlWalk from './assets/Female-5-Walk.png';
 
-console.log('###### FIRST MESSAGE ######');
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const sprW = 48;
@@ -76,6 +75,41 @@ function keyUpHandler(e) {
   keyPressed = keyDown || keyUp || keyRight || keyLeft;
 }
 
+function showBackground() {
+  const roadSize = 40;
+  const roadpadding = 4;
+  const cnvSize = 600;
+  const monumentR = 30;
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0, 0, cnvSize, cnvSize);
+
+  // the yellow bricks road
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(roadpadding, 0, roadSize, cnvSize);
+  ctx.fillRect(0, roadpadding, cnvSize, roadSize);
+  ctx.fillRect(cnvSize - roadpadding - roadSize, 0, roadSize, cnvSize);
+  ctx.fillRect(0, cnvSize - roadpadding - roadSize, cnvSize, roadSize);
+  // crossroad
+  ctx.fillRect(cnvSize / 2 - roadSize / 2, roadpadding, roadSize, cnvSize - roadSize);
+  ctx.fillRect(roadpadding, cnvSize / 2 - roadSize / 2, cnvSize - roadSize, roadSize);
+
+  // monument
+  ctx.beginPath();
+  ctx.arc(cnvSize / 2, cnvSize / 2, monumentR, 0, 2 * Math.PI);
+  ctx.fillStyle = 'blue';
+  ctx.fill();
+  ctx.strokeStyle = 'steelblue';
+  ctx.lineWidth = monumentR / 3 - cycle * 2;
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.arc(cnvSize / 2 + 3, cnvSize / 2 - 3, 4, 0, 2 * Math.PI);
+  ctx.fillStyle = 'lightblue';
+  ctx.fill();
+  ctx.closePath();
+}
+
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 
@@ -112,6 +146,7 @@ girlImg.addEventListener('load', () => {
 
     // все чистим и показываем новую картинку
     ctx.clearRect(0, 0, 600, 600);
+    showBackground();
     ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, sprW, sprH);
   }, animSpeed);
 });
