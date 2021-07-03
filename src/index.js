@@ -4,11 +4,12 @@ import GirlWalk from './assets/Female-5-Walk.png';
 console.log('###### FIRST MESSAGE ######');
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
-const spriteW = 48;
-const spriteH = 48;
+const sprW = 48;
+const sprH = 48;
 const shots = 3;
 const animSpeed = 120;
 let cycle = 0;
+let sprPos = 0; // spr row
 let posX = 0;
 let posY = 0;
 const canvasEnd = 510;
@@ -85,10 +86,23 @@ girlImg.addEventListener('load', () => {
   setInterval(() => {
     // двигаем персонажа
     if (keyPressed) {
-      if (keyDown) posY += step;
-      if (keyUp) posY -= step;
-      if (keyRight) posX += step;
-      if (keyLeft) posX -= step;
+      if (keyDown) {
+        posY += step;
+        sprPos = 0;
+      }
+      if (keyUp) {
+        posY -= step;
+        sprPos = 3;
+      }
+      if (keyRight) {
+        posX += step;
+        sprPos = 2;
+      }
+      if (keyLeft) {
+        posX -= step;
+        sprPos = 1;
+      }
+      cycle = (cycle + 1) % shots; // вычисляем координаты показываемого спpайта
     }
     // заставляем персонажа остановиться
     if (posX > canvasEnd) posX = canvasEnd;
@@ -98,7 +112,6 @@ girlImg.addEventListener('load', () => {
 
     // все чистим и показываем новую картинку
     ctx.clearRect(0, 0, 600, 600);
-    cycle = (cycle + 1) % shots; // вычисляем координаты показываемого спpайта
-    ctx.drawImage(girlImg, spriteW * cycle, 0, spriteW, spriteH, posX, posY, 100, 100);
+    ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, 100, 100);
   }, animSpeed);
 });
