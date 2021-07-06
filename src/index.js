@@ -11,7 +11,10 @@ let cycle = 0;
 let sprPos = 0; // spr row
 let posX = 0;
 let posY = 0;
-const canvasEnd = 550;
+const cnvW = canvas.width;
+const cnvH = canvas.height;
+const canvasHEnd = cnvW - sprW;
+const canvasVEnd = cnvH - sprH;
 const step = 10;
 let keyPressed = false;
 let keyDown = false;
@@ -78,24 +81,23 @@ function keyUpHandler(e) {
 function showBackground() {
   const roadSize = 40;
   const roadpadding = 4;
-  const cnvSize = 600;
   const monumentR = 30;
   ctx.fillStyle = 'green';
-  ctx.fillRect(0, 0, cnvSize, cnvSize);
+  ctx.fillRect(0, 0, cnvW, cnvH);
 
   // the yellow bricks road
   ctx.fillStyle = 'yellow';
-  ctx.fillRect(roadpadding, 0, roadSize, cnvSize);
-  ctx.fillRect(0, roadpadding, cnvSize, roadSize);
-  ctx.fillRect(cnvSize - roadpadding - roadSize, 0, roadSize, cnvSize);
-  ctx.fillRect(0, cnvSize - roadpadding - roadSize, cnvSize, roadSize);
+  ctx.fillRect(roadpadding, 0, roadSize, cnvH);
+  ctx.fillRect(0, roadpadding, cnvW, roadSize);
+  ctx.fillRect(cnvW - roadpadding - roadSize, 0, roadSize, cnvH);
+  ctx.fillRect(0, cnvH - roadpadding - roadSize, cnvW, roadSize);
   // crossroad
-  ctx.fillRect(cnvSize / 2 - roadSize / 2, roadpadding, roadSize, cnvSize - roadSize);
-  ctx.fillRect(roadpadding, cnvSize / 2 - roadSize / 2, cnvSize - roadSize, roadSize);
+  ctx.fillRect(cnvW / 2 - roadSize / 2, roadpadding, roadSize, cnvW - roadSize);
+  ctx.fillRect(roadpadding, cnvH / 2 - roadSize / 2, cnvH - roadSize, roadSize);
 
   // monument
   ctx.beginPath();
-  ctx.arc(cnvSize / 2, cnvSize / 2, monumentR, 0, 2 * Math.PI);
+  ctx.arc(cnvW / 2, cnvH / 2, monumentR, 0, 2 * Math.PI);
   ctx.fillStyle = 'blue';
   ctx.fill();
   ctx.strokeStyle = 'steelblue';
@@ -104,7 +106,7 @@ function showBackground() {
   ctx.closePath();
 
   ctx.beginPath();
-  ctx.arc(cnvSize / 2 + 3, cnvSize / 2 - 3, 4, 0, 2 * Math.PI);
+  ctx.arc(cnvW / 2 + 3, cnvH / 2 - 3, 4, 0, 2 * Math.PI);
   ctx.fillStyle = 'lightblue';
   ctx.fill();
   ctx.closePath();
@@ -139,13 +141,13 @@ girlImg.addEventListener('load', () => {
       cycle = (cycle + 1) % shots; // вычисляем координаты показываемого спpайта
     }
     // заставляем персонажа остановиться
-    if (posX > canvasEnd) posX = canvasEnd;
+    if (posX > canvasHEnd) posX = canvasHEnd;
     if (posX < 0) posX = 0;
-    if (posY > canvasEnd) posY = canvasEnd;
+    if (posY > canvasVEnd) posY = canvasVEnd;
     if (posY < 0) posY = 0;
 
     // все чистим и показываем новую картинку
-    ctx.clearRect(0, 0, 600, 600);
+    ctx.clearRect(0, 0, cnvW, cnvH);
     showBackground();
     ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, sprW, sprH);
   }, animSpeed);
