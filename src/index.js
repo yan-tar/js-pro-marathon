@@ -16,38 +16,35 @@ const cnvH = canvas.height;
 const canvasHEnd = cnvW - sprW;
 const canvasVEnd = cnvH - sprH;
 const step = 10;
-let keyPressed = false;
-let keyDown = false;
-let keyUp = false;
-let keyRight = false;
-let keyLeft = false;
+let isKeyPressed = false;
+let keyPressed = null;
 
 function keyDownHandler(e) {
   switch (e.key) {
     case 'Down':
     case 'ArrowDown':
     case 's':
-      keyDown = true;
+      keyPressed = 'down';
       break;
     case 'Up':
     case 'ArrowUp':
     case 'w':
-      keyUp = true;
+      keyPressed = 'up';
       break;
     case 'Left':
     case 'ArrowLeft':
     case 'a':
-      keyLeft = true;
+      keyPressed = 'left';
       break;
     case 'Right':
     case 'ArrowRight':
     case 'd':
-      keyRight = true;
+      keyPressed = 'right';
       break;
     default:
       return;
   }
-  keyPressed = keyDown || keyUp || keyRight || keyLeft;
+  isKeyPressed = !!keyPressed;
 }
 
 function keyUpHandler(e) {
@@ -55,27 +52,27 @@ function keyUpHandler(e) {
     case 'Down':
     case 'ArrowDown':
     case 's':
-      keyDown = false;
+      keyPressed = null;
       break;
     case 'Up':
     case 'ArrowUp':
     case 'w':
-      keyUp = false;
+      keyPressed = null;
       break;
     case 'Left':
     case 'ArrowLeft':
     case 'a':
-      keyLeft = false;
+      keyPressed = null;
       break;
     case 'Right':
     case 'ArrowRight':
     case 'd':
-      keyRight = false;
+      keyPressed = null;
       break;
     default:
       return;
   }
-  keyPressed = keyDown || keyUp || keyRight || keyLeft;
+  isKeyPressed = !!keyPressed;
 }
 
 function showBackground() {
@@ -121,20 +118,20 @@ girlImg.src = GirlWalk;
 girlImg.addEventListener('load', () => {
   setInterval(() => {
     // двигаем персонажа
-    if (keyPressed) {
-      if (keyDown) {
+    if (isKeyPressed) {
+      if (keyPressed === 'down') {
         posY += step;
         sprPos = 0;
       }
-      if (keyUp) {
+      if (keyPressed === 'up') {
         posY -= step;
         sprPos = 3;
       }
-      if (keyRight) {
+      if (keyPressed === 'right') {
         posX += step;
         sprPos = 2;
       }
-      if (keyLeft) {
+      if (keyPressed === 'left') {
         posX -= step;
         sprPos = 1;
       }
