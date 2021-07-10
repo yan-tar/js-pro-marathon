@@ -1,5 +1,5 @@
 import './index.scss';
-// import GirlWalk from './assets/Female-5-Walk.png';
+import GirlWalk from './assets/Female-5-Walk.png';
 import terrainAtlas from './assets/terrain.png';
 import worldCfg from './configs/world.json';
 import sprites from './configs/sprites';
@@ -8,77 +8,77 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const sprW = 48;
 const sprH = 48;
-// const shots = 3;
-// const animSpeed = 120;
-// let cycle = 0;
-// let sprPos = 0; // spr row
-// let posX = 0;
-// let posY = 0;
-// const cnvW = canvas.width;
-// const cnvH = canvas.height;
-// const canvasHEnd = cnvW - sprW;
-// const canvasVEnd = cnvH - sprH;
-// const step = 10;
-let keyPressed = false;
-let keyDown = false;
-let keyUp = false;
-let keyRight = false;
-let keyLeft = false;
+const shots = 3;
+const animSpeed = 120;
+let cycle = 0;
+let sprPos = 0; // spr row
+let posX = 0;
+let posY = 0;
+const cnvW = canvas.width;
+const cnvH = canvas.height;
+const canvasHEnd = cnvW - sprW;
+const canvasVEnd = cnvH - sprH;
+const step = 10;
+let keyPressed = null;
 
 function keyDownHandler(e) {
   switch (e.key) {
     case 'Down':
     case 'ArrowDown':
     case 's':
-      keyDown = true;
+      keyPressed = 'down';
       break;
     case 'Up':
     case 'ArrowUp':
     case 'w':
-      keyUp = true;
+      keyPressed = 'up';
       break;
     case 'Left':
     case 'ArrowLeft':
     case 'a':
-      keyLeft = true;
+      keyPressed = 'left';
       break;
     case 'Right':
     case 'ArrowRight':
     case 'd':
-      keyRight = true;
+      keyPressed = 'right';
       break;
     default:
-      return;
+      console.log(e.key, ' pressed');
+      break;
   }
-  keyPressed = keyDown || keyUp || keyRight || keyLeft;
 }
 
 function keyUpHandler(e) {
+  let keyReleased;
   switch (e.key) {
     case 'Down':
     case 'ArrowDown':
     case 's':
-      keyDown = false;
+      keyReleased = 'down';
       break;
     case 'Up':
     case 'ArrowUp':
     case 'w':
-      keyUp = false;
+      keyReleased = 'up';
       break;
     case 'Left':
     case 'ArrowLeft':
     case 'a':
-      keyLeft = false;
+      keyReleased = 'left';
       break;
     case 'Right':
     case 'ArrowRight':
     case 'd':
-      keyRight = false;
+      keyReleased = 'right';
       break;
     default:
-      return;
+      console.log(e.key, ' released');
+      break;
   }
-  keyPressed = keyDown || keyUp || keyRight || keyLeft;
+  if (keyReleased === keyPressed) {
+    keyPressed = null;
+  }
 }
 
 // function showBackground() {
@@ -118,48 +118,10 @@ function keyUpHandler(e) {
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 
-// const girlImg = document.createElement('img');
-// girlImg.src = GirlWalk;
-
-// girlImg.addEventListener('load', () => {
-// setInterval(() => {
-//   // двигаем персонажа
-//   if (keyPressed) {
-//     if (keyDown) {
-//       posY += step;
-//       sprPos = 0;
-//     }
-//     if (keyUp) {
-//       posY -= step;
-//       sprPos = 3;
-//     }
-//     if (keyRight) {
-//       posX += step;
-//       sprPos = 2;
-//     }
-//     if (keyLeft) {
-//       posX -= step;
-//       sprPos = 1;
-//     }
-//     cycle = (cycle + 1) % shots; // вычисляем координаты показываемого спpайта
-//   }
-//   // заставляем персонажа остановиться
-//   if (posX > canvasHEnd) posX = canvasHEnd;
-//   if (posX < 0) posX = 0;
-//   if (posY > canvasVEnd) posY = canvasVEnd;
-//   if (posY < 0) posY = 0;
-//   // все чистим и показываем новую картинку
-//   ctx.clearRect(0, 0, cnvW, cnvH);
-//   //showBackground();
-//   ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, sprW, sprH);
-// }, animSpeed);
-// });
-
 const terrain = document.createElement('img');
 terrain.src = terrainAtlas;
 
 terrain.addEventListener('load', () => {
-  console.log(sprites);
   const { map } = worldCfg; // деструктурируем и вытаскиваем (только) поле map
   map.forEach((cfgRow, y) => {
     cfgRow.forEach((cfgCell, x) => {
@@ -167,4 +129,45 @@ terrain.addEventListener('load', () => {
       ctx.drawImage(terrain, sX, sY, sW, sH, x * sprW, y * sprH, sprW, sprH);
     });
   });
+});
+
+const girlImg = document.createElement('img');
+girlImg.src = GirlWalk;
+
+girlImg.addEventListener('load', () => {
+  setInterval(() => {
+    // двигаем персонажа
+    if (keyPressed) {
+      switch (keyPressed) {
+        case 'down':
+          posY += step;
+          sprPos = 0;
+          break;
+        case 'up':
+          posY -= step;
+          sprPos = 3;
+          break;
+        case 'right':
+          posX += step;
+          sprPos = 2;
+          break;
+        case 'left':
+          posX -= step;
+          sprPos = 1;
+          break;
+        default:
+          break;
+      }
+      cycle = (cycle + 1) % shots; // вычисляем координаты показываемого спpайта
+    }
+    // заставляем персонажа остановиться
+    if (posX > canvasHEnd) posX = canvasHEnd;
+    if (posX < 0) posX = 0;
+    if (posY > canvasVEnd) posY = canvasVEnd;
+    if (posY < 0) posY = 0;
+    // все чистим и показываем новую картинку
+    ctx.clearRect(0, 0, cnvW, cnvH);
+    // showBackground();
+    ctx.drawImage(girlImg, sprW * cycle, sprH * sprPos, sprW, sprH, posX, posY, sprW, sprH);
+  }, animSpeed);
 });
