@@ -8,7 +8,7 @@ class ClientGame {
     });
     this.engine = this.createEngine();
 
-    this.initEngine(); 
+    this.initEngine();
 
     console.log(this);
   }
@@ -18,12 +18,12 @@ class ClientGame {
   }
 
   initEngine() {
-    this.engine
-      .loadSprites(sprites)
-      .then(() => {
-        console.log('### this.engine', this.engine);
-        this.engine.start();
-      });    
+    this.engine.loadSprites(sprites).then(() => {
+      this.engine.on('render', (_, time) => { // а этот прочерк всегда можно ставить вместо несуществующего аргумента?
+        // console.log('### render', time ) // time - это наш timestamp
+      }); // регистрируем событие: картинки загрузились, ура
+      this.engine.start();
+    });
   }
 
   // TODO: learn what "static" means

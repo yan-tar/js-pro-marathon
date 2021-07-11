@@ -1,3 +1,4 @@
+import EventSourceMixin from '../common/EventSourceMixin';
 class ClientEngine {
   constructor(canvas) {
     console.log(canvas);
@@ -8,13 +9,12 @@ class ClientEngine {
       ctx: null,
       imageLoaders: [], // здесь будем хранить картинки
       sprites: {},
-      images: {}
+      images: {},
     });
 
     this.ctx = canvas.getContext('2d');
 
     this.loop = this.loop.bind(this); // TODO: почему мы потеряли именно loop?
-  
 
     console.log(this);
   }
@@ -28,6 +28,7 @@ class ClientEngine {
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    this.trigger('render', timestamp);
     this.initNextFrame();
   }
 
@@ -45,7 +46,7 @@ class ClientEngine {
 
       for (let spriteName in group) {
         console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
-        const {img} = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
+        const { img } = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
         if (!this.images[img]) {
           this.imageLoaders.push(this.loadImage(img));
         }
@@ -55,14 +56,15 @@ class ClientEngine {
   }
 
   loadImage(url) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const i = new Image();
       this.images[url] = i;
       i.onload = () => resolve(i);
       i.src = url;
-    })
+    });
   }
-
 }
+
+Object.assign(ClientEngine.prototype, EventSourceMixin); // а почему мы не делаем это в конструкторе?
 
 export default ClientEngine;
