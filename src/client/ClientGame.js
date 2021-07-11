@@ -1,9 +1,23 @@
+import ClientEngine from "./ClientEngine";
+
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg, // дополняем this нашего класса конфигом
     });
+    this.engine = this.createEngine();
+
+    this.initEngine(); // а зачем сюда отдельный метод, а не просто this.engine.start()?
+
     console.log(this);
+  }
+
+  createEngine() {
+    return new ClientEngine(document.getElementById(this.cfg.tagId));
+  }
+
+  initEngine() {
+    this.engine.start();
   }
 
   // TODO: learn what "static" means
