@@ -6,19 +6,26 @@ class ClientWorld {
       levelCfg,
       height: levelCfg.map.length,
       width: levelCfg.map[0].length,
+      sprH: 48,
+      sprW: 48,
     });
+    console.log(this);
   }
 
   init() {
-    // console.log('### Map Init');
-    this.engine.renderSpriteFrame({
-      sprite: ['terrain', 'wall'],
-      frame: 0,
-      x: 0,
-      y: 0,
-      w: 48,
-      h: 48
-    })
+    const { map } = this.levelCfg;
+    map.forEach((cfgRow, y) => {
+      cfgRow.forEach((cfgCell, x) => {
+        this.engine.renderSpriteFrame({
+          sprite: ['terrain', cfgCell[0]],
+          frame: 0,
+          x: x * this.sprW,
+          y: y * this.sprH,
+          w: this.sprW,
+          h: this.sprH,
+        });
+      });
+    });
   }
 }
 
