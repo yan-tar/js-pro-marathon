@@ -6,11 +6,15 @@ class ClientEngine {
     Object.assign(this, {
       canvas,
       ctx: null,
-    })
+      imageLoaders: [], // здесь будем хранить картинки
+      sprites: {},
+      images: {}
+    });
 
     this.ctx = canvas.getContext('2d');
 
     this.loop = this.loop.bind(this); // TODO: почему мы потеряли именно loop?
+  
 
     console.log(this);
   }
@@ -20,7 +24,7 @@ class ClientEngine {
   }
 
   loop(timestamp) {
-    const {ctx, canvas} = this; // деструктурируем, чтоб проще обращаться?
+    const { ctx, canvas } = this; // деструктурируем, чтоб проще обращаться?
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -30,6 +34,35 @@ class ClientEngine {
   initNextFrame() {
     window.requestAnimationFrame(this.loop); // типа рекурсия?
   }
+
+  loadSprites(spritesGroup) {
+    this.imageLoaders = []; // на всякий случай очищаем массив
+
+    for (let groupName in spritesGroup) {
+      const group = spritesGroup[groupName];
+      this.sprites[groupName] = group; // object with diff sprites group
+      console.log('### groupName', groupName);
+
+      for (let spriteName in group) {
+        console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
+        const {img} = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
+        if (!this.images[img]) {
+          this.imageLoaders.push(this.loadImage(img));
+        }
+      }
+    }
+    return Promise.all(this.imageLoaders); // TODO: повторить промисы, охохо
+  }
+
+  loadImage(url) {
+    return new Promise(resolve => {
+      const i = new Image();
+      this.images[url] = i;
+      i.onload = () => resolve(i);
+      i.src = url;
+    })
+  }
+
 }
 
 export default ClientEngine;

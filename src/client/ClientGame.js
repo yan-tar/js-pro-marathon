@@ -1,4 +1,5 @@
-import ClientEngine from "./ClientEngine";
+import ClientEngine from './ClientEngine';
+import sprites from '../configs/sprites';
 
 class ClientGame {
   constructor(cfg) {
@@ -7,7 +8,7 @@ class ClientGame {
     });
     this.engine = this.createEngine();
 
-    this.initEngine(); // а зачем сюда отдельный метод, а не просто this.engine.start()?
+    this.initEngine(); 
 
     console.log(this);
   }
@@ -17,7 +18,12 @@ class ClientGame {
   }
 
   initEngine() {
-    this.engine.start();
+    this.engine
+      .loadSprites(sprites)
+      .then(() => {
+        console.log('### this.engine', this.engine);
+        this.engine.start();
+      });    
   }
 
   // TODO: learn what "static" means
