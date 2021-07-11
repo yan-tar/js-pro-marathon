@@ -1,5 +1,8 @@
 import ClientEngine from './ClientEngine';
+import ClientWorld from './ClientWorld';
+
 import sprites from '../configs/sprites';
+import levelCfg from '../configs/world.json';
 
 class ClientGame {
   constructor(cfg) {
@@ -7,6 +10,7 @@ class ClientGame {
       cfg, // дополняем this нашего класса конфигом
     });
     this.engine = this.createEngine();
+    this.map = this.createWorld();
 
     this.initEngine();
 
@@ -21,9 +25,14 @@ class ClientGame {
     this.engine.loadSprites(sprites).then(() => {
       this.engine.on('render', (_, time) => { // а этот прочерк всегда можно ставить вместо несуществующего аргумента?
         // console.log('### render', time ) // time - это наш timestamp
+        this.map.init();
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
     });
+  }
+
+  createWorld() {
+    return new ClientWorld(this, this.engine, levelCfg);
   }
 
   // TODO: learn what "static" means
