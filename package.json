@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "RPG JS Game",
   "scripts": {
-    "lint": "npx eslint src/**/*.js",
+    "lint": "npx eslint src/**/*.js --fix",
     "prettier": " npx prettier --write .",
     "dev": "npx webpack server",
     "prepare": "husky install",

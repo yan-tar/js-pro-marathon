@@ -1,8 +1,7 @@
 import EventSourceMixin from '../common/EventSourceMixin';
+
 class ClientEngine {
   constructor(canvas) {
-    console.log(canvas);
-
     // расширяем this класса ClientEngine - канвасом и контекстом
     Object.assign(this, {
       canvas,
@@ -14,7 +13,7 @@ class ClientEngine {
 
     this.ctx = canvas.getContext('2d');
 
-    this.loop = this.loop.bind(this); // TODO: почему мы потеряли именно loop?
+    this.loop = this.loop.bind(this);
 
     console.log(this);
   }
@@ -34,17 +33,18 @@ class ClientEngine {
 
   initNextFrame() {
     window.requestAnimationFrame(this.loop); // типа рекурсия?
+    // именно тут теряется контекст для лупа
   }
 
   loadSprites(spritesGroup) {
     this.imageLoaders = []; // на всякий случай очищаем массив
 
-    for (let groupName in spritesGroup) {
+    for (const groupName in spritesGroup) {
       const group = spritesGroup[groupName];
       this.sprites[groupName] = group; // object with diff sprites group
       console.log('### groupName', groupName);
 
-      for (let spriteName in group) {
+      for (const spriteName in group) {
         console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
         const { img } = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
         if (!this.images[img]) {
@@ -64,14 +64,15 @@ class ClientEngine {
     });
   }
 
-  renderSpriteFrame({ sprite, frame, x, y, w, h}) {
+  renderSpriteFrame({
+    sprite, frame, x, y, w, h,
+  }) {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
 
     this.ctx.drawImage(img, fx, fy, fw, fh, x, y, w, h);
   }
-
 }
 
 Object.assign(ClientEngine.prototype, EventSourceMixin); // а почему мы не делаем это в конструкторе?

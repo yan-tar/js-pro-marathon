@@ -8,5 +8,10 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  rules: {},
+  rules: {
+    'max-len': ['error', {
+      code: 120,
+      comments: 140
+    }],
+  },
 };
