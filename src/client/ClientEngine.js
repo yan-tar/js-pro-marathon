@@ -39,19 +39,20 @@ class ClientEngine {
   loadSprites(spritesGroup) {
     this.imageLoaders = []; // на всякий случай очищаем массив
 
-    for (const groupName in spritesGroup) {
+    Object.keys(spritesGroup).forEach((groupName) => {
       const group = spritesGroup[groupName];
       this.sprites[groupName] = group; // object with diff sprites group
       console.log('### groupName', groupName);
 
-      for (const spriteName in group) {
+      Object.keys(group).forEach((spriteName) => {
         console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
         const { img } = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
         if (!this.images[img]) {
           this.imageLoaders.push(this.loadImage(img));
         }
-      }
-    }
+      });
+    });
+
     return Promise.all(this.imageLoaders); // TODO: повторить промисы, охохо
   }
 
@@ -64,9 +65,7 @@ class ClientEngine {
     });
   }
 
-  renderSpriteFrame({
-    sprite, frame, x, y, w, h,
-  }) {
+  renderSpriteFrame({ sprite, frame, x, y, w, h }) {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
