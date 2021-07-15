@@ -1,10 +1,11 @@
 export default {
   pushEvent(event, sub) {
-    const subs = this.subscribers || (this.subscribers = {});
+    const subs = this.subscribers || (this.subscribers = {}); // смотрим, есть ли подписчики
     (subs[event] || (subs[event] = [])).push(sub);
   },
 
   on(event, callback) {
+    // добавляем ивент с флагом true (не одноразовый)
     this.pushEvent(event, [true, callback]);
   },
 
