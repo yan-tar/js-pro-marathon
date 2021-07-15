@@ -9,7 +9,7 @@ class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg, // дополняем this нашего класса конфигом
-      gameObjects
+      gameObjects,
     });
     this.engine = this.createEngine();
     this.map = this.createWorld();
@@ -25,11 +25,11 @@ class ClientGame {
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      this.engine.on('render', () => {
-        // this.engine.on('render', (_, time) => {
+      this.map.init();
+      this.engine.on('render', (_, time) => {
         // черточка - название переменной , чтобы показать, что она не используется
         // console.log('### render', time ) // time - это наш timestamp
-        this.map.init();
+        this.map.render(time);
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
     });

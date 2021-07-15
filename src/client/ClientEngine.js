@@ -10,7 +10,7 @@ class ClientEngine {
       imageLoaders: [], // здесь будем хранить картинки
       sprites: {},
       images: {},
-      camera: new ClientCamera({ canvas, engine: this})
+      camera: new ClientCamera({ canvas, engine: this }),
     });
 
     this.ctx = canvas.getContext('2d');
