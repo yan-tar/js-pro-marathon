@@ -44,33 +44,16 @@ class ClientGame {
   initKeys() {
     this.engine.input.onKey({
       ArrowLeft: (keydown) => {
-        if(keydown) {
-          this.player.moveByCellCoord(-1, 0, (cell) => {
-            // console.log('### cell', cell.findObjectsByType('grass')); // все, что не трава, будет возвращать нам пустой массив
-            return cell.findObjectsByType('grass').length;
-          })
-        }
+        this.player.moveTo("left", keydown);
       },
       ArrowRight: (keydown) => {
-        if(keydown) {
-          this.player.moveByCellCoord(1, 0, (cell) => {
-            return cell.findObjectsByType('grass').length;
-          })
-        }
+        this.player.moveTo("right", keydown);
       },
       ArrowDown: (keydown) => {
-        if(keydown) {
-          this.player.moveByCellCoord(0, 1, (cell) => {
-            return cell.findObjectsByType('grass').length;
-          })
-        }
+        this.player.moveTo("down", keydown);
       },
       ArrowUp: (keydown) => {
-        if(keydown) {
-          this.player.moveByCellCoord(0, -1, (cell) => {
-            return cell.findObjectsByType('grass').length;
-          })
-        }
+        this.player.moveTo("up", keydown);
       }
     })
   }
