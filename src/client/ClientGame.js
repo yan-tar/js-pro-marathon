@@ -3,11 +3,13 @@ import ClientWorld from './ClientWorld';
 
 import sprites from '../configs/sprites';
 import levelCfg from '../configs/world.json';
+import gameObjects from '../configs/gameObjects.json';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg, // дополняем this нашего класса конфигом
+      gameObjects
     });
     this.engine = this.createEngine();
     this.map = this.createWorld();
