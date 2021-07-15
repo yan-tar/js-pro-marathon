@@ -10,6 +10,7 @@ class ClientGame {
     Object.assign(this, {
       cfg, // дополняем this нашего класса конфигом
       gameObjects,
+      player: null,
     });
     this.engine = this.createEngine();
     this.map = this.createWorld();
@@ -17,6 +18,10 @@ class ClientGame {
     this.initEngine();
 
     console.log(this);
+  }
+
+  setPlayer(player) {
+    this.player = player;
   }
 
   createEngine() {
