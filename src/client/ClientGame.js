@@ -37,7 +37,22 @@ class ClientGame {
         this.map.render(time);
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
+      this.initKeys();
     });
+  }
+
+  initKeys() {
+    this.engine.input.onKey({
+      ArrowLeft: (keydown) => {
+        console.log(keydown);
+        if(keydown) {
+          this.player.moveByCellCoord(-1, 0, (cell) => {
+            // console.log('### cell', cell.findObjectsByType('grass')); // все, что не трава, будет возвращать нам пустой массив
+            return cell.findObjectsByType('grass').length;
+          })
+        }
+      }
+    })
   }
 
   createWorld() {
