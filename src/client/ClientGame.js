@@ -43,19 +43,26 @@ class ClientGame {
 
   initKeys() {
     this.engine.input.onKey({
-      ArrowLeft: (keydown) => {
-        this.player.moveTo("left", keydown);
-      },
-      ArrowRight: (keydown) => {
-        this.player.moveTo("right", keydown);
-      },
-      ArrowDown: (keydown) => {
-        this.player.moveTo("down", keydown);
-      },
-      ArrowUp: (keydown) => {
-        this.player.moveTo("up", keydown);
-      }
-    })
+      ArrowLeft: (keydown) => keydown && this.movePlayerToDir('left'),
+      ArrowRight: (keydown) => keydown && this.movePlayerToDir('right'),
+      ArrowDown: (keydown) => keydown && this.movePlayerToDir('down'),
+      ArrowUp: (keydown) => keydown && this.movePlayerToDir('up'),
+    });
+  }
+
+  movePlayerToDir(dir) {
+    const dirs = {
+      left: [-1, 0],
+      right: [1, 0],
+      down: [0, 1],
+      up: [0, -1],
+    };
+
+    const { player } = this;
+
+    if (player) {
+      player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => cell.findObjectsByType('grass').length);
+    }
   }
 
   createWorld() {

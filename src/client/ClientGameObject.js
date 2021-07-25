@@ -6,11 +6,11 @@ class ClientGameObject extends MovableObject {
 
     const { x, y, width, height } = cfg.cell;
 
-    const {world} = cfg.cell;
+    const { world } = cfg.cell;
     const gameObjs = world.game.gameObjects;
     const objCfg = typeof cfg.objCfg === 'string' ? { type: cfg.objCfg } : cfg.objCfg;
 
-    if(objCfg.player) {
+    if (objCfg.player) {
       world.game.setPlayer(this);
     }
 
@@ -43,32 +43,6 @@ class ClientGameObject extends MovableObject {
     if (!conditionCallback || conditionCallback(newCell)) this.setCell(newCell);
   }
 
-  moveTo(where, keydown) {
-    let coord = [];
-    switch (where) {
-      case "left": 
-        coord = [-1, 0];
-        break;
-      case "right": 
-        coord = [1, 0];
-        break;
-      case "down":
-        coord = [0, 1];
-        break;
-      case "up":
-        coord = [0, -1];
-        break;
-      default:
-        coord = [0, 0];
-    }
-
-    if(keydown) {
-      this.moveByCellCoord(coord[0], coord[1], (cell) => {
-        return cell.findObjectsByType('grass').length;
-      })
-    }
-  }
-
   setCell(newCell) {
     if (newCell) {
       this.detouch();
@@ -84,7 +58,7 @@ class ClientGameObject extends MovableObject {
     super.render(time);
 
     const { x, y, width, height, world } = this;
-    const {engine} = world;
+    const { engine } = world;
 
     const { sprite, frame, states } = this.spriteCfg;
 
