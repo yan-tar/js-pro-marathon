@@ -13,7 +13,9 @@ class ClientEngine {
       images: {},
       camera: new ClientCamera({ canvas, engine: this }),
       input: new ClientInput(canvas),
-      game
+      game,
+      lastRenderTime: 0,
+      startTime: 0,
     });
 
     this.ctx = canvas.getContext('2d');
@@ -28,6 +30,11 @@ class ClientEngine {
   }
 
   loop(timestamp) {
+    if(!this.startTime) {
+      this.startTime = timestamp;
+    }
+    this.lastRenderTime = timestamp;
+
     const { ctx, canvas } = this; // деструктурируем, чтоб проще обращаться?
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -47,10 +54,10 @@ class ClientEngine {
     Object.keys(spritesGroup).forEach((groupName) => {
       const group = spritesGroup[groupName];
       this.sprites[groupName] = group; // object with diff sprites group
-      console.log('### groupName', groupName);
+      // console.log('### groupName', groupName);
 
       Object.keys(group).forEach((spriteName) => {
-        console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
+        // console.log('### spriteName', spriteName); // group[spriteName] - object ({img} & frames[])
         const { img } = group[spriteName]; // деструктуризация, вытаскиваем только url картинки
         if (!this.images[img]) {
           this.imageLoaders.push(this.loadImage(img));
