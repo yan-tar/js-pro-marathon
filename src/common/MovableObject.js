@@ -35,6 +35,8 @@ class MovableObject extends PositionedObject {
       const newX = me.toX + dx.offset - me.deltaX;
       const newY = me.toY + dy.offset - me.deltaY;
 
+      // мы хотим всегда двигаться с одинаковой скорстью, а не ускоряться
+      me.motionProgress = dx.progress;
 
       if (newX === me.toX && newY === me.toY) {
         me.speed = 0;
