@@ -25,15 +25,18 @@ class ClientGame {
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId));
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+  }
+
+  getWorld() {
+    return this.map;
   }
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
-        // черточка - название переменной , чтобы показать, что она не используется
-        // console.log('### render', time ) // time - это наш timestamp
+        this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
