@@ -18,7 +18,8 @@ class ClientCamera extends MovableObject {
 
   focusAtGameObject(obj) {
     const pos = obj.worldPosition(50, 50);
-    this.moveTo(pos.x - this.width / 2, pos.y - this.height / 2, false); // я так понимаю, центрируем относительно центра объекта, а не левого верхнего угла
+    // центрируем относительно центра объекта, а не левого верхнего угла
+    this.moveTo(pos.x - this.width / 2, pos.y - this.height / 2, false);
   }
 }
 

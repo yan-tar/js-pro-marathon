@@ -25,19 +25,23 @@ class ClientGame {
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId));
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+  }
+
+  getWorld() {
+    return this.map;
   }
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
-        // черточка - название переменной , чтобы показать, что она не используется
-        // console.log('### render', time ) // time - это наш timestamp
+        this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
       this.initKeys();
+      this.focusOnCanvas();
     });
   }
 
@@ -60,9 +64,20 @@ class ClientGame {
 
     const { player } = this;
 
-    if (player) {
-      player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => cell.findObjectsByType('grass').length);
+    if (player && player.motionProgress === 1) {
+      const canMove = player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => cell.findObjectsByType('grass').length);
+
+      if (canMove) {
+        player.setState(dir);
+        player.once('motion-stopped', () => player.setState('main'));
+      }
     }
+  }
+
+  focusOnCanvas() {
+    const cnv = document.getElementById(this.cfg.tagId);
+    cnv.focus();
+    cnv.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }
 
   createWorld() {

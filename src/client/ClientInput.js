@@ -16,6 +16,7 @@ class ClientInput {
     this.keysPressed.add(e.code);
     this.keyHandlers[e.code] && this.keyHandlers[e.code](true);
     this.trigger('keydown', e);
+    e.preventDefault(); // не даю странице скроллиться
   }
 
   onKeyUp(e) {
