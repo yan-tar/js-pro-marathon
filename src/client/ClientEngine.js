@@ -30,7 +30,7 @@ class ClientEngine {
   }
 
   loop(timestamp) {
-    if(!this.startTime) {
+    if (!this.startTime) {
       this.startTime = timestamp;
     }
     this.lastRenderTime = timestamp;
@@ -81,7 +81,7 @@ class ClientEngine {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
-    const camera = this.camera;
+    const { camera } = this;
 
     this.ctx.drawImage(img, fx, fy, fw, fh, x - camera.x, y - camera.y, w, h);
   }

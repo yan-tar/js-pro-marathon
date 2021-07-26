@@ -41,6 +41,7 @@ class ClientGame {
       }); // регистрируем событие: картинки загрузились, ура
       this.engine.start();
       this.initKeys();
+      this.focusOnCanvas();
     });
   }
 
@@ -64,15 +65,19 @@ class ClientGame {
     const { player } = this;
 
     if (player && player.motionProgress === 1) {
-      const canMove = player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => {
-        return cell.findObjectsByType('grass').length
-      });
+      const canMove = player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => cell.findObjectsByType('grass').length);
 
-      if(canMove) {
+      if (canMove) {
         player.setState(dir);
         player.once('motion-stopped', () => player.setState('main'));
       }
     }
+  }
+
+  focusOnCanvas() {
+    const cnv = document.getElementById(this.cfg.tagId);
+    cnv.focus();
+    cnv.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }
 
   createWorld() {

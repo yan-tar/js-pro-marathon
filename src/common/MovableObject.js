@@ -18,7 +18,7 @@ class MovableObject extends PositionedObject {
         motionStartTime: 0,
         motionProgress: 1,
 
-        clampToMap: true, //  по умолчанию объект не должен вылетать за пределы карты
+        clampToMap: true, // по умолчанию объект не должен вылетать за пределы карты
       },
       cfg,
     );
@@ -68,7 +68,7 @@ class MovableObject extends PositionedObject {
       }
     }
 
-    if(smooth) {
+    if (smooth) {
       this.startMotion(newX, newY, speed);
     } else {
       this.x = newX;
@@ -77,15 +77,15 @@ class MovableObject extends PositionedObject {
   }
 
   startMotion(newX, newY, speed) {
-    if(this.world) {
+    if (this.world) {
       Object.assign(this, {
         motionStartTime: this.world.engine.lastRenderTime,
         speed,
         toX: newX,
         toY: newY,
         deltaX: newX - this.x,
-        deltaY: newY - this.y
-      })
+        deltaY: newY - this.y,
+      });
     }
   }
 }

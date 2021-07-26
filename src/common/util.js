@@ -1,6 +1,6 @@
-export function clamp(x, from_x, to_x) {
-  if (x < from_x) x = from_x;
-  if (x > to_x) x = to_x;
+export function clamp(x, fromX, toX) {
+  if (x < fromX) x = fromX;
+  if (x > toX) x = toX;
 
   return x;
 }
@@ -9,12 +9,11 @@ export function animateEx(dx, startTime, currentTime, speed, looped = false) {
   const diff = currentTime - startTime;
   let time = (speed && diff / speed) || 0;
 
-  if(looped) {
-    time = time % 1;
-  }
-  else if( time > 1) {
+  if (looped) {
+    time %= 1;
+  } else if (time > 1) {
     time = 1;
   }
 
-  return  {offset:dx * time, progress: time}; 
+  return { offset: dx * time, progress: time };
 }

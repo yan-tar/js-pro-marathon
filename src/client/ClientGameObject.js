@@ -64,7 +64,7 @@ class ClientGameObject extends MovableObject {
   setState(state) {
     this.state = state;
 
-    if(this.world) {
+    if (this.world) {
       this.animationStartTime = this.world.engine.lastRenderTime;
     }
   }
@@ -73,9 +73,10 @@ class ClientGameObject extends MovableObject {
     const state = this.spriteCfg.states[this.state];
     const lengthFrame = state.frames.length;
     const animate = animateEx(lengthFrame, this.animationStartTime, time, state.duration, true);
-    
-    // бинарный оператор | (или) действует как Math.floor, но только для положительных чисел
-    const frame = (lengthFrame + animate.offset | 0) % lengthFrame; 
+
+    // бинарный оператор | (или) действует как Math.floor, но только для положительных чисел. и линтер ругается
+    // const frame = ((lengthFrame + animate.offset) | 0) % lengthFrame;
+    const frame = Math.floor(lengthFrame + animate.offset) % lengthFrame;
 
     return state.frames[frame];
   }
@@ -86,10 +87,10 @@ class ClientGameObject extends MovableObject {
     const { x, y, width, height, world } = this;
     const { engine } = world;
 
-    const { sprite, frame, states, type } = this.spriteCfg;
+    const { sprite, frame, type } = this.spriteCfg;
 
-    //const spriteFrame = states ? states.main.frames[0] : frame;
-    const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time); 
+    // const spriteFrame = this.spriteCfg.states ? this.spriteCfg.states.main.frames[0] : frame;
+    const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);
 
     engine.renderSpriteFrame({ sprite, frame: spriteFrame, x, y, w: width, h: height });
   }
